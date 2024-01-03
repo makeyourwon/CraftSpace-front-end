@@ -1,0 +1,7 @@
+header {
+    display: flex; /* Use flexbox to layout children */
+    justify-content: space-between; /* Space between items */
+    align-items: center; /* Align items vertically */
+    padding: 10px; /* Add some padding */
+    background: #f0f0f0; /* Light gray background */
+}
