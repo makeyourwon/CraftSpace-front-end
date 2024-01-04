@@ -23,6 +23,36 @@ function authorize(){
 
             else if (logIn.data.token){
                 form.style.display = 'none'
+
+                //find this logged in user
+
+
+                const users = await axios.get('http://localhost:3000/user',{
+                    headers: {
+                        'Authorization': `Bearer ${logIn.data.token}` // token received from the login route
+                    }
+                })
+            
+                const findUser = users.data.userList
+                console.log(findUser)
+                let thisUser = {
+                    username:'',
+                    _id:''
+                }
+                for (let i in findUser){
+                    if (findUser[i].username === inputName.value){
+                        
+                        thisUser.username = findUser[i].username
+                        thisUser._id = findUser[i]._id
+                        
+                    }
+                }
+                // console.log(thisUser)
+                localStorage.setItem('userInfo', JSON.stringify(thisUser))
+
+
+
+                //
                 
                 // console.log(logIn.data.token)
                 localStorage.setItem("token", logIn.data.token)
@@ -55,10 +85,9 @@ function authorize(){
                     }
                 })
                 try{
-                    // console.log(posts.data.postTitle)
                     
-
-
+                    const postList = posts.data.postList
+                    // console.log(postList)
                     postList.forEach( async (post) => {
 
                         try{
@@ -342,7 +371,7 @@ function authorize(){
 
                 userInfo.addEventListener('click', () => {
                     // When setting the user information;
-
+                    // localStorage.setItem('userInfo', userInfo.textContent)
                     window.location.href = '../userpages/profile.html'
                 })
 
