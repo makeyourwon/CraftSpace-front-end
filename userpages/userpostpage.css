@@ -1,0 +1,76 @@
+header {
+    display: flex; /* Use flexbox to layout children */
+    justify-content: space-between; /* Space between items */
+    align-items: center; /* Align items vertically */
+    padding: 10px; /* Add some padding */
+    background: #f0f0f0; /* Light gray background */
+}
+
+.user, .log-out{
+  display: flex;
+  justify-content: center;
+}
+
+/*---------
+/* Hamburger Menu Button */
+#logo {
+  display: flex;
+  align-items: center;
+}
+
+.hamburger {
+  cursor: pointer;
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 2rem; /* adjust as needed */
+  width: 2rem; /* adjust as needed */
+}
+
+.hamburger span {
+  display: block;
+  height: 0.25rem; /* adjust as needed */
+  width: 100%;
+  background: black; /* or any color you want */
+  border-radius: 10px;
+}
+
+/* Navigation Menu */
+.navMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+a {
+  color:gray;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1rem;
+}
+
+/* Initially hide the menu */
+.hidden {
+  display: none;
+}
+
+/* Adjustments for when menu is shown */
+.show {
+  display: flex;
+}
+
+.fixed-bottom-bar {
+  position: fixed;   /* Fixed position */
+  bottom: 0;         /* Stick to bottom */
+  left: 0;           /* Stretch from the left edge */
+  width: 100%;       /* Full width */
+  background-color: #333; /* Example background color */
+  color: white;      /* Example text color */
+  text-align: center; /* Center the text (optional) */
+  padding: 10px 0;   /* Some padding */
+  z-index: 1000;     /* Ensure it's on top */
+}
+
+
+  /*--------
