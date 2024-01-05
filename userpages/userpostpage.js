@@ -353,7 +353,7 @@ async function userPostPage(){
     userStatus.addEventListener('click', () => {
         localStorage.removeItem('token')
         localStorage.removeItem('userInfo')
-        window.location.href='..landingPage/index.html'
+        window.location.href='../index.html'
     })
         
     userInfo.addEventListener('click', () => {

@@ -179,7 +179,7 @@ async function home(){
                 
                 // Append new sections to postdiv
                 postContainer.appendChild(title)
-                // postContainer.appendChild(author)
+                postContainer.appendChild(author)
                 postContainer.appendChild(content)
 
                 likeDiv.appendChild(likeBtn)
@@ -420,7 +420,7 @@ async function home(){
     userStatus.addEventListener('click', () => {
         localStorage.removeItem('token')
         localStorage.removeItem('userInfo')
-        window.location.href='../landingPage/index.html'
+        window.location.href='../index.html'
     })
     }
 }
