@@ -40,16 +40,20 @@ async function userPostPage(){
                 const postContainer = document.createElement('div')
                 const title = document.createElement('h2')
                 const content = document.createElement('p')
+                const editContainer = document.createElement('div')
         
                 const likeDiv = document.createElement('div')
                 const likeCount = document.createElement('p')
                 const likeBtn = document.createElement('div')
+
+                const editBtn = document.createElement('button')
+                const deleteBtn = document.createElement('button')
         
                 const commentDiv = document.createElement('div')
                 const commentCount = document.createElement('p')
                 const commentBtn = document.createElement('div')
                 const main = document.querySelector('main')
-        
+                
                 const iconBar = document.createElement('div')
                 
                 // Set attributes to each section
@@ -64,6 +68,11 @@ async function userPostPage(){
                 commentCount.classList.add('comment-count', 'icon') 
                 commentBtn.classList.add('comment', 'icon') 
         
+                editContainer.classList.add('edit-container')
+                editBtn.classList.add('edit')
+                deleteBtn.classList.add('delete')
+
+
                 iconBar.className = 'icon-bar'
         
         
@@ -71,7 +80,9 @@ async function userPostPage(){
                 likeBtn.style.color = 'black'
         
                 commentBtn.innerHTML =  '<i class="fa-regular fa-comment"></i>'
-                
+
+                editBtn.textContent = 'Edit'
+                deleteBtn.textContent = 'Delete'
                 //add post values
                 title.textContent = post.postTitle
                 content.textContent = post.postContent
@@ -109,7 +120,12 @@ async function userPostPage(){
                 commentDiv.appendChild(commentBtn)
                 commentDiv.appendChild(commentCount)
                 iconBar.appendChild(commentDiv)
+
+                editContainer.appendChild(editBtn)
+                editContainer.appendChild(deleteBtn)
+
                 postContainer.appendChild(iconBar)
+                postContainer.appendChild(editContainer)
                 main.prepend(postContainer)
         
                 const newLikes = {likes: userInfo.textContent}
