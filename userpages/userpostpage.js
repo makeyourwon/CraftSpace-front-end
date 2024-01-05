@@ -172,7 +172,7 @@ async function userPostPage(){
                 // }
         
         
-        
+                //Likebtn in one listener
                 likeBtn.addEventListener('click', async () => {
                     
                     //check if the user is in likes array.  If yes, change the color of heart and update post
@@ -210,16 +210,14 @@ async function userPostPage(){
                             }})
                             // console.log("Success:", addUser);
                             //change the likes count
-                            likeCount.textContent = addUser.data.postUpdated.likes.length
-        
+                            likeCount.textContent = addUser.data.postUpdated.likes.length     
                             
-                            
-                //         }catch(error) {
-                //             console.error("Error updating likes:", `${error}`);
-                //         }
+                        }catch(error) {
+                            console.error("Error updating likes:", `${error}`);
+                        }
         
-                //     }
-                // })
+                    }
+                })
         
                 
                 // chatgpt answer
@@ -355,7 +353,7 @@ async function userPostPage(){
     userStatus.addEventListener('click', () => {
         localStorage.removeItem('token')
         localStorage.removeItem('userInfo')
-        window.location.href='../landingPage/index.html'
+        window.location.href='..landingPage/index.html'
     })
         
     userInfo.addEventListener('click', () => {
