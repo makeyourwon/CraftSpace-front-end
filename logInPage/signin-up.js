@@ -58,7 +58,7 @@ function authorize(){
                 
                 // // console.log(logIn.data.token)
                 localStorage.setItem("token", logIn.data.token)
-                window.location.href = '../posts/home.html'
+                window.location.href = '../home/home.html'
             
                 
                 // const main = document.querySelector('main')

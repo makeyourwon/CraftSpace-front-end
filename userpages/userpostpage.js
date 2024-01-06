@@ -14,6 +14,7 @@ async function userPostPage(){
     const userStatus = document.querySelector('.log-out')
     const userStored = JSON.parse(localStorage.getItem('userInfo'))
     userInfo.textContent = userStored.username
+    userStatus.textContent = 'Log out'
     const thisUserId = userStored._id
     // console.log(thisUserId)
     
@@ -27,24 +28,33 @@ async function userPostPage(){
 
     
     const postList = posts.data.postList
-    const userContext = userInfo.username
+    const userContext = userStored.username
     // console.log(thisUser)
 
 
     
-    const postUserId = []
+    const postUserId = [] // to check if current user is in the userId array of postList.
     postList.forEach(post => {
         if (post.userId === thisUserId){
             try{
             
                 const postContainer = document.createElement('div')
+                const postOriginal = document.createElement('div')
                 const title = document.createElement('h2')
                 const content = document.createElement('p')
+
+                const imgContainer = document.createElement('div')
+                const img = document.createElement('img')
+
+
                 const editContainer = document.createElement('div')
+                imgContainer.className = 'img-container'
+                img.className = 'img'
         
                 const likeDiv = document.createElement('div')
                 const likeCount = document.createElement('p')
-                const likeBtn = document.createElement('div')
+                const likeBtnReg = document.createElement('div')
+                const likeBtnSolid = document.createElement('div')
 
                 const editBtn = document.createElement('button')
                 const deleteBtn = document.createElement('button')
@@ -58,9 +68,13 @@ async function userPostPage(){
                 
                 // Set attributes to each section
                 postContainer.className = 'post-container'
+                postContainer.setAttribute('id',post._id)
+                postOriginal.className = 'original-container'
                 title.className = 'title'
                 content.className = 'content'
-                likeBtn.classList.add('like','icon') 
+
+                likeBtnReg.classList.add('like','icon','regular') 
+                likeBtnReg.classList.add('like','icon','solid')
                 likeDiv.classList.add('like-dive', 'icon','icon-div') 
                 likeCount.classList.add('like-count', 'icon') 
         
@@ -76,8 +90,11 @@ async function userPostPage(){
                 iconBar.className = 'icon-bar'
         
         
-                likeBtn.innerHTML = '<i class="fa-regular fa-heart"></i>'
-                likeBtn.style.color = 'black'
+                likeBtnReg.innerHTML = '<i class="fa-regular fa-heart"></i>'
+                likeBtnReg.style.color = 'black'
+                
+                likeBtnSolid.innerHTML = '<i class="fa-solid fa-heart"></i>'
+                likeBtnSolid.style.color = 'red'
         
                 commentBtn.innerHTML =  '<i class="fa-regular fa-comment"></i>'
 
@@ -88,14 +105,16 @@ async function userPostPage(){
                 content.textContent = post.postContent
         
                 //style icon bar
-                likeBtn.style.display = 'flex'
+                likeBtnReg.style.display = 'flex'
+                likeBtnSolid.style.display = 'flex'
                 commentBtn.style.display = 'flex'
                 likeCount.style.display = 'flex'
                 commentCount.style.display = 'flex'
                 likeDiv.style.display = 'flex'
                 commentDiv.style.display = 'flex'
         
-                likeBtn.style.alignItems = 'center'
+                likeBtnReg.style.alignItems = 'center'
+                likeBtnSolid.style.alignItems = 'center'
                 commentBtn.style.alignItems = 'center'
                 likeCount.style.alignItems = 'center'
                 commentCount.style.alignItems = 'center'
@@ -105,15 +124,20 @@ async function userPostPage(){
         
                 likeCount.textContent = post.likes.length
                 commentCount.textContent = post.commentId.length
-        
+
+                postUserId.push(post.userId)
+                // console.log(postUserId)
                 
                 iconBar.style.display = 'flex'
                 
                 // Append new sections to postdiv
-                postContainer.appendChild(title)
-                postContainer.appendChild(content)
+                postOriginal.appendChild(title)
+                postOriginal.appendChild(content)
+                postOriginal.appendChild(imgContainer)
+                
         
-                likeDiv.appendChild(likeBtn)
+                likeDiv.appendChild(likeBtnReg)
+                likeDiv.appendChild(likeBtnSolid)
                 likeDiv.appendChild(likeCount)
                 iconBar.appendChild(likeDiv)
         
@@ -124,8 +148,27 @@ async function userPostPage(){
                 editContainer.appendChild(editBtn)
                 editContainer.appendChild(deleteBtn)
 
-                postContainer.appendChild(iconBar)
-                postContainer.appendChild(editContainer)
+                //add images
+                if (post.images.length > 0) {
+                    post.images.forEach(imageUrl => {
+                        if (imageUrl !==''){
+                            const img = document.createElement('img')
+                            img.className = 'img'
+                            img.src = imageUrl; // Set the src of img element to the image URL
+                            img.alt = "User Post Image"; // Set the alt text for the image
+                            img.style.maxWidth = '100%'; // Optional: Ensure the image isn't too large
+                            imgContainer.appendChild(img)
+                            ; // Append the image to the post container
+                        }
+                        // console.log(img)
+                    });
+                }
+
+                postOriginal.appendChild(iconBar)
+                postOriginal.appendChild(editContainer)
+                postContainer.appendChild(postOriginal)
+                
+                
                 main.prepend(postContainer)
         
                 const newLikes = {likes: userInfo.textContent}
@@ -133,67 +176,16 @@ async function userPostPage(){
                 const id = post._id
                 
                 
-                // console.log(userContext)
-        
-                //check if the user is in likes array to decide heart color.
-                // if( post.likes.includes(userContext)){
-                //     //set the like button style.
-                //     likeBtn.innerHTML = '<i class="fa-solid fa-heart"></i>'
-                //     likeBtn.style.color = 'red'
+            
+                //add likeBtn listener
+               // check if the user is in likes array to decide heart color.
+                if( post.likes.includes(userContext)){
+                    //set the like button style.
+                    likeBtnSolid.style.display = 'flex'
+                    likeBtnReg.style.display = 'none'
                     
-                //     //add event listener
-                //     likeBtn.addEventListener('click', async () => {
-                //         try{
-                //             const removeUser = await axios.put(`http://localhost:3000/user/post/${id}`, {$pull: newLikes},{
-                //                 headers: {
-                //                 'Authorization': `Bearer ${token}` // token received from the login route
-                //             }} )
-                        
-                //             console.log("Success:", removeUser);
-                //             likeBtn.innerHTML = '<i class="fa-regular fa-heart"></i>'
-                //             likeBtn.style.color = 'black'
-                            
-                //             likeCount.textContent = removeUser.data.postUpdated.likes.length
-                //             console.log("Success:", removeUser)
-                //         }catch(error){
-                //             console.error("Error updating likes:", `${error}`)
-                //         }
-                //     })
-                // }
-                // if( !post.likes.includes(userContext)){
-                //     likeBtn.innerHTML = '<i class="fa-regular fa-heart"></i>'
-                //     likeBtn.style.color = 'black'
-        
-                //     likeBtn.addEventListener('click', async () => {
-                //         try{
-                //             console.log(newLikes)
-                //             likeBtn.innerHTML = '<i class="fa-solid fa-heart"></i>'
-                //             likeBtn.style.color = 'red'
-                            
-                //             const addUser = await axios.put(`http://localhost:3000/user/post/${id}`, {$addToSet: newLikes},{
-                //                 headers: {
-                //                 'Authorization': `Bearer ${token}` // token received from the login route
-                                
-                //             }})
-                //             // console.log("Success:", addUser);
-                //             //change the likes count
-                //             likeCount.textContent = addUser.data.postUpdated.likes.length
-
-                //             console.log("Success:", addUser)
-                //         }catch(error){
-                //             console.error("Error updating likes:", `${error}`);
-                //         }
-                //     })
-        
-                // }
-        
-        
-                //Likebtn in one listener
-                likeBtn.addEventListener('click', async () => {
-                    
-                    //check if the user is in likes array.  If yes, change the color of heart and update post
-                    //and then update the count quantity to the front end.
-                    if (post.likes.includes(userContext)){
+                    //add event listener
+                    likeDiv.addEventListener('click', async () => {
                         try{
                             const removeUser = await axios.put(`http://localhost:3000/user/post/${id}`, {$pull: newLikes},{
                                 headers: {
@@ -201,23 +193,23 @@ async function userPostPage(){
                             }} )
                         
                             console.log("Success:", removeUser);
-                            likeBtn.innerHTML = '<i class="fa-regular fa-heart"></i>'
-                            likeBtn.style.color = 'black'
+                            likeBtnSolid.style.display = 'none'
+                            likeBtnReg.style.display = 'flex'
                             
                             likeCount.textContent = removeUser.data.postUpdated.likes.length
-        
-                            
-                        
+                            console.log("Success:", removeUser)
                         }catch(error){
-                            console.error("Error updating likes:", `${error}`);
+                            console.error("Error updating likes:", `${error}`)
                         }
-                    }else{
-                        // if user is not in likes array, change the color of heart and update the post in back end;
-                        // and update the like numbers to the front end.
+                    })
+                }
+                if( !post.likes.includes(userContext)){
+                    likeBtnSolid.style.display = 'none'
+                    likeBtnReg.style.display = 'flex'
+        
+                    likeDiv.addEventListener('click', async () => {
                         try{
-                            console.log(newLikes)
-                            likeBtn.innerHTML = '<i class="fa-solid fa-heart"></i>'
-                            likeBtn.style.color = 'red'
+                            // console.log(newLikes)
                             
                             const addUser = await axios.put(`http://localhost:3000/user/post/${id}`, {$addToSet: newLikes},{
                                 headers: {
@@ -226,18 +218,25 @@ async function userPostPage(){
                             }})
                             // console.log("Success:", addUser);
                             //change the likes count
-                            likeCount.textContent = addUser.data.postUpdated.likes.length     
-                            
-                        }catch(error) {
+                            likeCount.textContent = addUser.data.postUpdated.likes.length
+
+                            likeBtnSolid.style.display = 'flex'
+                            likeBtnReg.style.display = 'none'
+
+                            console.log("Success:", addUser)
+                        }catch(error){
                             console.error("Error updating likes:", `${error}`);
                         }
+                    })
         
-                    }
-                })
+                }
+        
+        
+            
         
                 
-                // chatgpt answer
-                // likeBtn.innerHTML = post.likes.includes(userContext) ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>';
+                // chatgpt answer not perfect..
+                // likeBtnReg.innerHTML = post.likes.includes(userContext) ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>';
                 // likeBtn.style.color = post.likes.includes(userContext) ? 'red' : 'black';
 
                 // likeBtn.addEventListener('click', async () => {
@@ -277,6 +276,50 @@ async function userPostPage(){
                 
                 
                 
+                
+                
+                // if( post.likes.includes(userContext)){
+                //     //set the like button style.
+                //     likeBtn.innerHTML = '<i class="fa-solid fa-heart"></i>'
+                //     likeBtn.style.color = 'red'
+                // }
+                // if ( !post.likes.includes(userContext)){
+                //     likeBtn.innerHTML = '<i class="fa-regular fa-heart"></i>'
+                //     likeBtn.style.color = 'black'
+                // }
+
+
+                // likeBtn.addEventListener('click', async ()=> {
+                //     if( post.likes.includes(userContext)){
+                //         const removeUser = await axios.put(`http://localhost:3000/user/post/${id}`, {$pull: newLikes},{
+                //                 headers: {
+                //                 'Authorization': `Bearer ${token}` // token received from the login route
+                //             }} )
+
+                //         likeCount.textContent = removeUser.data.postUpdated.likes.length
+                //         likeBtn.innerHTML = '<i class="fa-regular fa-heart"></i>'
+                //         likeBtn.style.color = 'black'
+
+                //         post.likes = removeUser.data.postUpdated.likes
+                                
+                //     }
+                //     if(!post.likes.includes(userContext)){
+
+                //         const addUser = await axios.put(`http://localhost:3000/user/post/${id}`, {$addToSet: newLikes},{
+                //                 headers: {
+                //                 'Authorization': `Bearer ${token}` // token received from the login route
+                //             }} )
+
+                //             likeCount.textContent = addUser.data.postUpdated.likes.length
+                //             likeBtn.innerHTML = '<i class="fa-solid fa-heart"></i>'
+                //             likeBtn.style.color = 'black'
+                //             post.likes = addUser.data.postUpdated.likes
+                //     }
+
+                // })
+
+
+
                 // Add comment function
                 commentBtn.addEventListener('click', () =>{
                     // add comment section
@@ -303,14 +346,17 @@ async function userPostPage(){
             
                     // Retrieve value
                     const newComment = {
-                        comment: commentText.value
+                        comment: ''
                     }
+                    // console.log(commentText.value)
                     
                     //save comment to database
                     sendBtn.addEventListener('click', async ()=> {
                         if (commentText.value !== ''){
+                            newComment.comment = commentText.value
+                            console.log(newComment)
                             try{
-                                const updateComment = await axios.post('http://localhost:3000/post/comment', { $push: newComment},{
+                                const updateComment = await axios.post('http://localhost:3000/post/comment', newComment,{
                                     headers: {
                                         'Authorization': `Bearer ${token}` // token received from the login route
                                     } 
@@ -318,6 +364,7 @@ async function userPostPage(){
                                 //get commentId and store it to post schema
                                 const commentId = updateComment.data.newComment[0]._id
                                 console.log(commentId)
+                                // console.log(commentId)
                                 const updateCommentId = await axios.put(`http://localhost:3000/user/post/${post._id}`, {$push: {commentId:commentId}},{
                                     headers: {
                                     'Authorization': `Bearer ${token}` // token received from the login route
@@ -350,7 +397,185 @@ async function userPostPage(){
                         
                     })
                 })
-                postUserId.push(post.userId)
+
+
+                //editBtn action
+                //hide post container and recreate a post container
+                editBtn.addEventListener('click',  (e) => {
+
+                    //get current post info
+                    const clicked = e.currentTarget
+                    const clickedPost = clicked.parentNode.parentNode
+
+                    // console.log(clickedPost)
+
+                    // structure the edit box
+                    const editPostContainer = document.createElement('div')
+                    const editImage = document.createElement('input')
+                    const editTitle = document.createElement('input')
+                    const editContent = document.createElement('textarea')
+                    const saveBtn = document.createElement('button')
+                    const editCancelBtn = document.createElement('button')
+
+                    const clickedPostTitle = clickedPost.querySelector('.title')
+                    const clickedPostContent = clickedPost.querySelector('.content')
+                    const clickedPostImage = clickedPost.querySelectorAll('.img')
+
+
+                    editTitle.className = "edit-title"
+                    editContent.className = 'edit-content'
+                    editImage.type = 'text'
+                    editImage.className = 'img'
+                    editImage.placeholder = "Separate link by ,"
+
+                    editPostContainer.className = 'edit-post'
+                    saveBtn.className = 'save'
+                    editCancelBtn.className = 'edit-cancel'
+
+                    saveBtn.textContent = 'Save'
+                    editCancelBtn.textContent = 'Cancel'
+
+
+                    editTitle.value = clickedPostTitle.textContent
+                    editContent.value = clickedPostContent.textContent
+                    
+            
+                    if (clickedPostImage){
+                        
+                        const imagesUrl = Array.from(clickedPostImage).map(img => img.src)
+                        editImage.value = imagesUrl
+                        // console.log(imagesUrl)
+                        // console.log(joinImagesUrl)
+                    }
+                    
+                    
+                    
+
+                    //add the title content and image choice to the edit container
+                    editPostContainer.append(editTitle)
+                    editPostContainer.append(editContent)
+                    editPostContainer.append(editImage)
+                    editPostContainer.append(saveBtn)
+                    editPostContainer.append(editCancelBtn)
+
+                    postContainer.appendChild(editPostContainer)
+
+
+                    postOriginal.style.display = 'none'
+                    editPostContainer.style.display = 'block'
+
+
+                    saveBtn.addEventListener('click', async () => {
+                        
+                        //define the edited post to be saved to database
+                        const editedPost = {
+                            postTitle: editTitle.value,
+                            postContent: editContent.value,
+                            images: []
+
+                        }
+                        //Get the image array
+                        const imageUrls = editImage.value.split(',').map(url => url.trim())
+                        imageUrls.forEach(url => {
+                            editedPost.images.push(url)
+                        })
+
+
+                        // console.log(editedPost)
+                        // console.log(id)
+
+                        const updateEditedPost = await axios.put(`http://localhost:3000/user/post/${id}`, editedPost, {
+                            headers:{
+                                'Authorization': `Bearer ${token}` // token received from the login route
+                            }
+                        })
+
+                        // console.log(updateEditedPost)
+
+                        // main.replaceChild(postContainer, editPostContainer)
+                        editPostContainer.style.display = 'none'
+
+                        const updatedPost = await axios.get(`http://localhost:3000/user/post/${id}`, {
+                            headers:{
+                                'Authorization': `Bearer ${token}` // token received from the login route
+                            }
+                        })
+                        const updatedPostInfo = updatedPost.data.postList
+                        // console.log(updatedPostInfo)
+                        title.textContent = updatedPostInfo.postTitle
+                        content.textContent = updatedPostInfo.postContent
+                        const updatedImages = updatedPostInfo.images
+
+                        //  console.log(updatedImages)
+
+                        //remove all images in the image container first
+                        while(imgContainer.firstChild){
+                            imgContainer.removeChild(imgContainer.firstChild)
+                        }
+                        
+                        //Then re-append images one by one
+                        updatedImages.forEach(url => {
+                            // console.log(url)
+                            const img = document.createElement('img')
+                            img.className = 'img'
+                            img.src = url
+                            img.alt = "User Post Image"
+                            imgContainer.appendChild(img)
+                            console.log(imgContainer)
+                        })
+                        postOriginal.style.display = 'block'
+
+                    })
+
+
+                    editCancelBtn.addEventListener('click', () => {
+
+                        try{
+                            editPostContainer.style.display = 'none'
+                            postOriginal.style.display = 'block'
+
+                        }catch(error){
+                            console.log('edit cancel button error', `${error}`)
+                        }
+                        
+                    
+                    })
+
+                })
+
+
+
+
+
+                deleteBtn.addEventListener('click', async (e) =>{
+                    const clickedBtn = e.currentTarget
+                    const postDiv = clickedBtn.parentNode.parentNode.parentNode
+                    const _id = postDiv.getAttribute('id')
+                    console.log(_id)
+
+                    const deletedPost = await axios.delete(`http://localhost:3000/user/post/${_id}`,{
+                        headers:{
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                    postDiv.remove()
+
+                    const commentIdArray = deletedPost.data.postDeleted.commentId
+                    // console.log(commentIdArray)
+
+                    commentIdArray.forEach(async (id) => {
+                        const deleteComment = await axios.delete(`http://localhost:3000/post/comment/${id}`,{
+                            headers:{
+                                Authorization: `Bearer ${token}`
+                            }
+                        })
+                        console.log(deleteComment)
+                    })
+                        
+
+
+                })
+
             }catch(error){
                     console.log(`insert post error : ${error}`)
             }
@@ -363,7 +588,7 @@ async function userPostPage(){
         
     }
 
-    console.log(postUserId)
+
 
     //log out function
     userStatus.addEventListener('click', () => {
@@ -371,7 +596,8 @@ async function userPostPage(){
         localStorage.removeItem('userInfo')
         window.location.href='../index.html'
     })
-        
+    
+    //Go to user profile
     userInfo.addEventListener('click', () => {
         // When setting the user information;
         // localStorage.setItem('userInfo', userInfo.textContent)
@@ -379,7 +605,11 @@ async function userPostPage(){
     })
 
                     
-
+    //Connect post button to createpost page
+    const postButton = document.querySelector('.post-button')
+    postButton.addEventListener('click', () => {
+        window.location.href = '../createpost/createpost.html'
+    })
 
 
 

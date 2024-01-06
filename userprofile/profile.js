@@ -35,15 +35,6 @@ async function profile(){
     }
  
 
-    
-
-
-
-
-
-
-
-
         //log out function
 
         userStatus.addEventListener('click', () => {
@@ -51,6 +42,12 @@ async function profile(){
             localStorage.removeItem('userInfo')
             window.location.href='../landingPage/index.html'
         })
-}
+
+        //Connect post button to createpost page
+        const postButton = document.querySelector('.post-button')
+        postButton.addEventListener('click', () => {
+            window.location.href = '../createpost/createpost.html'
+        })
+    }
 
 profile()
