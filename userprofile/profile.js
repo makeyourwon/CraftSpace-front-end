@@ -40,6 +40,7 @@ async function profile(){
         userStatus.addEventListener('click', () => {
             localStorage.removeItem('token')
             localStorage.removeItem('userInfo')
+            localStorage.removeItem('selectUser')
             window.location.href='../landingPage/index.html'
         })
 

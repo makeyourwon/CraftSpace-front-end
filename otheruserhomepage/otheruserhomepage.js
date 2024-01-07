@@ -4,19 +4,23 @@ function toggleMenu() {
     navMenu.classList.toggle('show');
 }
 
-async function userPostPage(){
+
+
+async function otherUserHomePage(){
     const token = localStorage.getItem('token')
+    const selectUser = JSON.parse(localStorage.getItem('selectUser'))
+
     // console.log(token)
 
-    //get logged in user info
+    //get logged in user info for header
     const main = document.querySelector('main')
     const userInfo = document.querySelector('.user')
     const userStatus = document.querySelector('.log-out')
     const userStored = JSON.parse(localStorage.getItem('userInfo'))
     userInfo.textContent = userStored.username
     userStatus.textContent = 'Log out'
-    const thisUserId = userStored._id
-    // console.log(thisUserId)
+
+
     
 
     const posts = await axios.get('http://localhost:3000/user/post',{
@@ -31,12 +35,18 @@ async function userPostPage(){
     const userContext = userStored.username
     // console.log(thisUser)
 
-
+    const userTitle = document.createElement('div')
+    userTitle.classList.add('user-title')
+    userTitle.textContent = `${selectUser.selectusername}'s page`
+    const body = document.querySelector('body')
     
-    const postUserId = [] // to check if current user is in the userId array of postList.
+    body.insertBefore(userTitle, main)
     postList.forEach(post => {
-        if (post.userId === thisUserId){
+        if (post.userId === selectUser.selectUserId){
             try{
+                // console.log(post.userId)
+                // console.log(selectUser.selectUserId)
+
             
                 const postContainer = document.createElement('div')
                 const postOriginal = document.createElement('div')
@@ -55,9 +65,8 @@ async function userPostPage(){
                 const likeCount = document.createElement('p')
                 const likeBtn = document.createElement('div')
 
-
-                const editBtn = document.createElement('button')
-                const deleteBtn = document.createElement('button')
+                // const editBtn = document.createElement('button')
+                // const deleteBtn = document.createElement('button')
         
                 const commentDiv = document.createElement('div')
                 const commentCount = document.createElement('p')
@@ -83,8 +92,8 @@ async function userPostPage(){
                 commentBtn.classList.add('comment', 'icon') 
         
                 editContainer.classList.add('edit-container')
-                editBtn.classList.add('edit')
-                deleteBtn.classList.add('delete')
+                // editBtn.classList.add('edit')
+                // deleteBtn.classList.add('delete')
 
 
                 iconBar.className = 'icon-bar'
@@ -97,15 +106,14 @@ async function userPostPage(){
         
                 commentBtn.innerHTML =  '<i class="fa-regular fa-comment"></i>'
 
-                editBtn.textContent = 'Edit'
-                deleteBtn.textContent = 'Delete'
+                // editBtn.textContent = 'Edit'
+                // deleteBtn.textContent = 'Delete'
                 //add post values
                 title.textContent = post.postTitle
                 content.textContent = post.postContent
         
                 //style icon bar
                 likeBtn.style.display = 'flex'
-
                 commentBtn.style.display = 'flex'
                 likeCount.style.display = 'flex'
                 commentCount.style.display = 'flex'
@@ -113,7 +121,6 @@ async function userPostPage(){
                 commentDiv.style.display = 'flex'
         
                 likeBtn.style.alignItems = 'center'
-
                 commentBtn.style.alignItems = 'center'
                 likeCount.style.alignItems = 'center'
                 commentCount.style.alignItems = 'center'
@@ -124,8 +131,7 @@ async function userPostPage(){
                 likeCount.textContent = post.likes.length
                 commentCount.textContent = post.commentId.length
 
-                postUserId.push(post.userId)
-                // console.log(postUserId)
+
                 
                 iconBar.style.display = 'flex'
                 
@@ -135,8 +141,7 @@ async function userPostPage(){
                 postOriginal.appendChild(imgContainer)
                 
         
-                likeDiv.appendChild(likeBtn)
-
+                likeDiv.appendChild (likeBtn)
                 likeDiv.appendChild(likeCount)
                 iconBar.appendChild(likeDiv)
         
@@ -144,8 +149,8 @@ async function userPostPage(){
                 commentDiv.appendChild(commentCount)
                 iconBar.appendChild(commentDiv)
 
-                editContainer.appendChild(editBtn)
-                editContainer.appendChild(deleteBtn)
+                // editContainer.appendChild(editBtn)
+                // editContainer.appendChild(deleteBtn)
 
                 //add images
                 if (post.images.length > 0) {
@@ -217,7 +222,6 @@ async function userPostPage(){
                     }
 
                 })
-
 
 
                 // Add comment function
@@ -301,191 +305,180 @@ async function userPostPage(){
 
                 //editBtn action
                 //hide post container and recreate a post container
-                editBtn.addEventListener('click',  (e) => {
+                // editBtn.addEventListener('click',  (e) => {
 
-                    //get current post info
-                    const clicked = e.currentTarget
-                    const clickedPost = clicked.parentNode.parentNode
+                //     //get current post info
+                //     const clicked = e.currentTarget
+                //     const clickedPost = clicked.parentNode.parentNode
 
-                    // console.log(clickedPost)
+                //     // console.log(clickedPost)
 
-                    // structure the edit box
-                    const editPostContainer = document.createElement('div')
-                    const editImage = document.createElement('input')
-                    const editTitle = document.createElement('input')
-                    const editContent = document.createElement('textarea')
-                    const saveBtn = document.createElement('button')
-                    const editCancelBtn = document.createElement('button')
+                //     // structure the edit box
+                //     const editPostContainer = document.createElement('div')
+                //     const editImage = document.createElement('input')
+                //     const editTitle = document.createElement('input')
+                //     const editContent = document.createElement('textarea')
+                //     const saveBtn = document.createElement('button')
+                //     const editCancelBtn = document.createElement('button')
 
-                    const clickedPostTitle = clickedPost.querySelector('.title')
-                    const clickedPostContent = clickedPost.querySelector('.content')
-                    const clickedPostImage = clickedPost.querySelectorAll('.img')
-
-
-                    editTitle.className = "edit-title"
-                    editContent.className = 'edit-content'
-                    editImage.type = 'text'
-                    editImage.className = 'img'
-                    editImage.placeholder = "Separate link by ,"
-
-                    editPostContainer.className = 'edit-post'
-                    saveBtn.className = 'save'
-                    editCancelBtn.className = 'edit-cancel'
-
-                    saveBtn.textContent = 'Save'
-                    editCancelBtn.textContent = 'Cancel'
+                //     const clickedPostTitle = clickedPost.querySelector('.title')
+                //     const clickedPostContent = clickedPost.querySelector('.content')
+                //     const clickedPostImage = clickedPost.querySelectorAll('.img')
 
 
-                    editTitle.value = clickedPostTitle.textContent
-                    editContent.value = clickedPostContent.textContent
+                //     editTitle.className = "edit-title"
+                //     editContent.className = 'edit-content'
+                //     editImage.type = 'text'
+                //     editImage.className = 'img'
+                //     editImage.placeholder = "Separate link by ,"
+
+                //     editPostContainer.className = 'edit-post'
+                //     saveBtn.className = 'save'
+                //     editCancelBtn.className = 'edit-cancel'
+
+                //     saveBtn.textContent = 'Save'
+                //     editCancelBtn.textContent = 'Cancel'
+
+
+                //     editTitle.value = clickedPostTitle.textContent
+                //     editContent.value = clickedPostContent.textContent
                     
             
-                    if (clickedPostImage){
+                //     if (clickedPostImage){
                         
-                        const imagesUrl = Array.from(clickedPostImage).map(img => img.src)
-                        editImage.value = imagesUrl
-                        // console.log(imagesUrl)
-                        // console.log(joinImagesUrl)
-                    }
+                //         const imagesUrl = Array.from(clickedPostImage).map(img => img.src)
+                //         editImage.value = imagesUrl
+                //         // console.log(imagesUrl)
+                //         // console.log(joinImagesUrl)
+                //     }
                     
                     
                     
 
-                    //add the title content and image choice to the edit container
-                    editPostContainer.append(editTitle)
-                    editPostContainer.append(editContent)
-                    editPostContainer.append(editImage)
-                    editPostContainer.append(saveBtn)
-                    editPostContainer.append(editCancelBtn)
+                //     //add the title content and image choice to the edit container
+                //     editPostContainer.append(editTitle)
+                //     editPostContainer.append(editContent)
+                //     editPostContainer.append(editImage)
+                //     editPostContainer.append(saveBtn)
+                //     editPostContainer.append(editCancelBtn)
 
-                    postContainer.appendChild(editPostContainer)
-
-
-                    postOriginal.style.display = 'none'
-                    editPostContainer.style.display = 'block'
+                //     postContainer.appendChild(editPostContainer)
 
 
-                    saveBtn.addEventListener('click', async () => {
+                //     postOriginal.style.display = 'none'
+                //     editPostContainer.style.display = 'block'
+
+
+                //     saveBtn.addEventListener('click', async () => {
                         
-                        //define the edited post to be saved to database
-                        const editedPost = {
-                            postTitle: editTitle.value,
-                            postContent: editContent.value,
-                            images: []
+                //         //define the edited post to be saved to database
+                //         const editedPost = {
+                //             postTitle: editTitle.value,
+                //             postContent: editContent.value,
+                //             images: []
 
-                        }
-                        //Get the image array
-                        const imageUrls = editImage.value.split(',').map(url => url.trim())
-                        imageUrls.forEach(url => {
-                            editedPost.images.push(url)
-                        })
+                //         }
+                //         //Get the image array
+                //         const imageUrls = editImage.value.split(',').map(url => url.trim())
+                //         imageUrls.forEach(url => {
+                //             editedPost.images.push(url)
+                //         })
 
 
-                        // console.log(editedPost)
-                        // console.log(id)
+                //         // console.log(editedPost)
+                //         // console.log(id)
 
-                        const updateEditedPost = await axios.put(`http://localhost:3000/user/post/${id}`, editedPost, {
-                            headers:{
-                                'Authorization': `Bearer ${token}` // token received from the login route
-                            }
-                        })
+                //         const updateEditedPost = await axios.put(`http://localhost:3000/user/post/${id}`, editedPost, {
+                //             headers:{
+                //                 'Authorization': `Bearer ${token}` // token received from the login route
+                //             }
+                //         })
 
-                        // console.log(updateEditedPost)
+                //         // console.log(updateEditedPost)
 
-                        // main.replaceChild(postContainer, editPostContainer)
-                        editPostContainer.style.display = 'none'
+                //         // main.replaceChild(postContainer, editPostContainer)
+                //         editPostContainer.style.display = 'none'
 
-                        const updatedPost = await axios.get(`http://localhost:3000/user/post/${id}`, {
-                            headers:{
-                                'Authorization': `Bearer ${token}` // token received from the login route
-                            }
-                        })
-                        const updatedPostInfo = updatedPost.data.postList
-                        // console.log(updatedPostInfo)
-                        title.textContent = updatedPostInfo.postTitle
-                        content.textContent = updatedPostInfo.postContent
-                        const updatedImages = updatedPostInfo.images
+                //         const updatedPost = await axios.get(`http://localhost:3000/user/post/${id}`, {
+                //             headers:{
+                //                 'Authorization': `Bearer ${token}` // token received from the login route
+                //             }
+                //         })
+                //         const updatedPostInfo = updatedPost.data.postList
+                //         // console.log(updatedPostInfo)
+                //         title.textContent = updatedPostInfo.postTitle
+                //         content.textContent = updatedPostInfo.postContent
+                //         const updatedImages = updatedPostInfo.images
 
-                        //  console.log(updatedImages)
+                //         //  console.log(updatedImages)
 
-                        //remove all images in the image container first
-                        while(imgContainer.firstChild){
-                            imgContainer.removeChild(imgContainer.firstChild)
-                        }
+                //         //remove all images in the image container first
+                //         while(imgContainer.firstChild){
+                //             imgContainer.removeChild(imgContainer.firstChild)
+                //         }
                         
-                        //Then re-append images one by one
-                        updatedImages.forEach(url => {
-                            // console.log(url)
-                            const img = document.createElement('img')
-                            img.className = 'img'
-                            img.src = url
-                            img.alt = "User Post Image"
-                            imgContainer.appendChild(img)
-                            console.log(imgContainer)
-                        })
-                        postOriginal.style.display = 'block'
+                //         //Then re-append images one by one
+                //         updatedImages.forEach(url => {
+                //             // console.log(url)
+                //             const img = document.createElement('img')
+                //             img.className = 'img'
+                //             img.src = url
+                //             img.alt = "User Post Image"
+                //             imgContainer.appendChild(img)
+                //             console.log(imgContainer)
+                //         })
+                //         postOriginal.style.display = 'block'
 
-                    })
+                //     })
 
 
-                    editCancelBtn.addEventListener('click', () => {
+                //     editCancelBtn.addEventListener('click', () => {
 
-                        try{
-                            editPostContainer.style.display = 'none'
-                            postOriginal.style.display = 'block'
+                //         try{
+                //             editPostContainer.style.display = 'none'
+                //             postOriginal.style.display = 'block'
 
-                        }catch(error){
-                            console.log('edit cancel button error', `${error}`)
-                        }
+                //         }catch(error){
+                //             console.log('edit cancel button error', `${error}`)
+                //         }
                         
                     
-                    })
+                //     })
 
-                })
-
-
+                // })
 
 
 
-                deleteBtn.addEventListener('click', async (e) =>{
-                    const clickedBtn = e.currentTarget
-                    const postDiv = clickedBtn.parentNode.parentNode.parentNode
-                    const _id = postDiv.getAttribute('id')
-                    const authorOfPost = post.userId
 
-                    console.log(authorOfPost)
-                    // console.log(_id)
 
-                    const deletedPost = await axios.delete(`http://localhost:3000/user/post/${_id}`,{
-                        headers:{
-                            Authorization: `Bearer ${token}`
-                        }
-                    })
-                    postDiv.remove()
+                // deleteBtn.addEventListener('click', async (e) =>{
+                //     const clickedBtn = e.currentTarget
+                //     const postDiv = clickedBtn.parentNode.parentNode.parentNode
+                //     const _id = postDiv.getAttribute('id')
+                //     console.log(_id)
 
-                    //Remove all comments nested to the post.
-                    const commentIdArray = deletedPost.data.postDeleted.commentId
-                    // console.log(commentIdArray)
-                    commentIdArray.forEach(async (id) => {
-                        const deleteComment = await axios.delete(`http://localhost:3000/post/comment/${id}`,{
-                            headers:{
-                                Authorization: `Bearer ${token}`
-                            }
-                        })
-                        // console.log(deleteComment)
-                    })
+                //     const deletedPost = await axios.delete(`http://localhost:3000/user/post/${_id}`,{
+                //         headers:{
+                //             Authorization: `Bearer ${token}`
+                //         }
+                //     })
+                //     postDiv.remove()
 
-                    const userUpdatePostId = await axios.put(`http://localhost:3000/user/${authorOfPost}`, { $pull: {postId:_id}}, {
-                        headers:{
-                            Authorization: `Bearer ${token}`
-                        }
-                    })
+                //     const commentIdArray = deletedPost.data.postDeleted.commentId
+                //     // console.log(commentIdArray)
 
-                    console.log(userUpdatePostId)
+                //     commentIdArray.forEach(async (id) => {
+                //         const deleteComment = await axios.delete(`http://localhost:3000/post/comment/${id}`,{
+                //             headers:{
+                //                 Authorization: `Bearer ${token}`
+                //             }
+                //         })
+                //         // console.log(deleteComment)
+                //     })
                         
 
 
-                })
+                // })
 
                 
 
@@ -494,12 +487,7 @@ async function userPostPage(){
             }
         }
     })
-    if (!postUserId.includes(thisUserId)){
 
-        main.textContent = `You don't have any post yet.....`
-        main.style.color = 'lightgray'
-        
-    }
 
 
 
@@ -529,4 +517,4 @@ async function userPostPage(){
 
 }
 
-userPostPage()
+otherUserHomePage()
