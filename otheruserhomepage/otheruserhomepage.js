@@ -496,6 +496,7 @@ async function otherUserHomePage(){
         localStorage.removeItem('token')
         localStorage.removeItem('userInfo')
         localStorage.removeItem('selectUser')
+        localStorage.removeItem('postInfo')
         window.location.href='../index.html'
     })
     

@@ -17,7 +17,7 @@ async function singlePost() {
     userStatus.textContent = 'Log out'
     const thisUserId = userStored._id
 
-    
+
 
 
 
@@ -32,6 +32,7 @@ async function singlePost() {
         localStorage.removeItem('token')
         localStorage.removeItem('userInfo')
         localStorage.removeItem('selectUser')
+        localStorage.removeItem('postInfo')
         window.location.href='../index.html'
     })
 
