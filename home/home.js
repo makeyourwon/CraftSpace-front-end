@@ -175,7 +175,7 @@ async function home(){
                 commentDiv.style.margin = '8px'
                 iconBar.style.display = 'flex'
                 author.style.display = 'flex'
-                author.style.justifyContent = 'flex-end'
+                author.style.justifyContent = 'flex-start'
                 author.style.color =   'light gray'
                 
 

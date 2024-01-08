@@ -110,10 +110,15 @@ body {
 }
 
 .title {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 10px;
-}
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+    transition: color 0.3s ease; /* Smooth transition for color change */
+  }
+  .title:hover {
+    color: #2a7e43; /* Change text color on hover */
+    cursor: pointer; /* Change cursor to indicate clickable */
+  }
 
 .content {
   font-size: 16px;

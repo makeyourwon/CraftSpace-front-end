@@ -111,8 +111,12 @@ body {
 .title {
     font-size: 24px;
     color: #333;
-    margin-bottom: 10px;
-}
+    transition: color 0.3s ease; /* Smooth transition for color change */
+  }
+  .title:hover {
+    color: #2a7e43; /* Change text color on hover */
+    cursor: pointer; /* Change cursor to indicate clickable */
+  }
 
 .content {
     font-size: 16px;
@@ -120,13 +124,20 @@ body {
 }
 
 .author {
-    display: block;
-    font-size: 12px;
-    color: #888;
-    margin-bottom: 10px;
-    text-align: right;
+    /* existing styles */
+    color: lightgray;
+    transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition for color and background color change */
+    cursor: pointer; /* Change cursor to indicate clickable */
+    padding: 0 0 5px 0; /* Padding for better click area and visual */
+    border-radius: 5px; /* Optional: rounded corners */
+    margin: 0 0 20px 0;
+    display: flex;
+    justify-content: flex-start;
 }
 
+.author:hover {
+    color: #0056b3; /* Change background color on hover */
+}
 /* Icon Bar */
 .icon-bar {
     display: flex;
