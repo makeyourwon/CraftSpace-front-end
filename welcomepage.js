@@ -1,6 +1,11 @@
 // import { default: axios }  from "axios"
 // Example frontend fetch call
 
+// const API_URI = process.env.Backend_URI
+// fetch(`${API_URI}/api`)
+//     .then(response => response.json())
+//     .then(data => console.log(data))
+//     .catch(error => console.error('Error:', error));
 
 
 

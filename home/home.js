@@ -86,6 +86,10 @@ async function home(){
                 const author = document.createElement('small')
                 const content = document.createElement('p')
 
+                const imgContainer = document.createElement('img-container')
+                imgContainer.className = 'img-container'
+
+
                 const likeDiv = document.createElement('div')
                 const likeCount = document.createElement('p')
                 const likeBtn = document.createElement('div')
@@ -172,6 +176,7 @@ async function home(){
                 postContainer.appendChild(title)
                 postContainer.appendChild(author)
                 postContainer.appendChild(content)
+                postContainer.appendChild(imgContainer)
 
                 likeDiv.appendChild(likeBtn)
                 likeDiv.appendChild(likeCount)
@@ -190,11 +195,12 @@ async function home(){
                             img.src = imageUrl; // Set the src of img element to the image URL
                             img.alt = "User Post Image"; // Set the alt text for the image
                             img.style.maxWidth = '100%'; // Optional: Ensure the image isn't too large
-                            postContainer.appendChild(img); // Append the image to the post container
+                            imgContainer.appendChild(img); // Append the image to the post container
                         }
 
                     });
                 }
+
                 postContainer.appendChild(iconBar)
                 main.prepend(postContainer)
 

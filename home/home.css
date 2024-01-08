@@ -123,6 +123,19 @@ body {
     color: #666;
 }
 
+.img-container {
+    display: flex; /* Adjust this as needed */
+    flex-wrap: wrap; /* Allows images to wrap to the next line */
+    justify-content: center; /* Center images in the container */
+    align-items: center; /* Align images vertically */
+  }
+  
+  .img {
+    max-width: 100%; /* Maximum width is 100% of parent */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Display block to remove bottom margin/whitespace */
+    margin: 5px; /* Optional: Adds a little space around the images */
+  }
 .author {
     /* existing styles */
     color: lightgray;
@@ -138,6 +151,9 @@ body {
 .author:hover {
     color: #0056b3; /* Change background color on hover */
 }
+
+
+
 /* Icon Bar */
 .icon-bar {
     display: flex;
