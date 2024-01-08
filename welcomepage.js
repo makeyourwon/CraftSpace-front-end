@@ -7,10 +7,10 @@
 //     .then(data => console.log(data))
 //     .catch(error => console.error('Error:', error));
 
-
+const Backend_URI = 'https://craft-space-08b2210b921c.herokuapp.com'
 
 async function latest5Post() {
-    const posts = await axios.get('http://localhost:3000/post')
+    const posts = await axios.get(`${Backend_URI}/post`)
     // console.log(posts.data)
     const latestPost = posts.data.postList
     console.log(latestPost)

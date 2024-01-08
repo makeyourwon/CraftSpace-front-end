@@ -4,7 +4,7 @@ function toggleMenu() {
     navMenu.classList.toggle('show');
 }
 
-Backend_URI = 'https://craft-space-08b2210b921c.herokuapp.com'
+const Backend_URI = 'https://craft-space-08b2210b921c.herokuapp.com'
 
 async function profile(){
     // Get all the sections needed

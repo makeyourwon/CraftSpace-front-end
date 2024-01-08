@@ -8,7 +8,7 @@ const main = document.querySelector('main')
 const userInfo = document.querySelector('.user')
 const userStatus = document.querySelector('.log-out')
 
-Backend_URI = 'https://craft-space-08b2210b921c.herokuapp.com'
+const Backend_URI = 'https://craft-space-08b2210b921c.herokuapp.com'
 
 
 if (!token){
