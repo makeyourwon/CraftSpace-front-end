@@ -250,7 +250,8 @@ async function otherUserHomePage(){
             
                     // Retrieve value
                     const newComment = {
-                        comment: ''
+                        comment: '',
+                        username: userStored.username
                     }
                     // console.log(commentText.value)
                     
@@ -303,184 +304,19 @@ async function otherUserHomePage(){
                 })
 
 
-                //editBtn action
-                //hide post container and recreate a post container
-                // editBtn.addEventListener('click',  (e) => {
-
-                //     //get current post info
-                //     const clicked = e.currentTarget
-                //     const clickedPost = clicked.parentNode.parentNode
-
-                //     // console.log(clickedPost)
-
-                //     // structure the edit box
-                //     const editPostContainer = document.createElement('div')
-                //     const editImage = document.createElement('input')
-                //     const editTitle = document.createElement('input')
-                //     const editContent = document.createElement('textarea')
-                //     const saveBtn = document.createElement('button')
-                //     const editCancelBtn = document.createElement('button')
-
-                //     const clickedPostTitle = clickedPost.querySelector('.title')
-                //     const clickedPostContent = clickedPost.querySelector('.content')
-                //     const clickedPostImage = clickedPost.querySelectorAll('.img')
-
-
-                //     editTitle.className = "edit-title"
-                //     editContent.className = 'edit-content'
-                //     editImage.type = 'text'
-                //     editImage.className = 'img'
-                //     editImage.placeholder = "Separate link by ,"
-
-                //     editPostContainer.className = 'edit-post'
-                //     saveBtn.className = 'save'
-                //     editCancelBtn.className = 'edit-cancel'
-
-                //     saveBtn.textContent = 'Save'
-                //     editCancelBtn.textContent = 'Cancel'
-
-
-                //     editTitle.value = clickedPostTitle.textContent
-                //     editContent.value = clickedPostContent.textContent
-                    
-            
-                //     if (clickedPostImage){
-                        
-                //         const imagesUrl = Array.from(clickedPostImage).map(img => img.src)
-                //         editImage.value = imagesUrl
-                //         // console.log(imagesUrl)
-                //         // console.log(joinImagesUrl)
-                //     }
-                    
-                    
-                    
-
-                //     //add the title content and image choice to the edit container
-                //     editPostContainer.append(editTitle)
-                //     editPostContainer.append(editContent)
-                //     editPostContainer.append(editImage)
-                //     editPostContainer.append(saveBtn)
-                //     editPostContainer.append(editCancelBtn)
-
-                //     postContainer.appendChild(editPostContainer)
-
-
-                //     postOriginal.style.display = 'none'
-                //     editPostContainer.style.display = 'block'
-
-
-                //     saveBtn.addEventListener('click', async () => {
-                        
-                //         //define the edited post to be saved to database
-                //         const editedPost = {
-                //             postTitle: editTitle.value,
-                //             postContent: editContent.value,
-                //             images: []
-
-                //         }
-                //         //Get the image array
-                //         const imageUrls = editImage.value.split(',').map(url => url.trim())
-                //         imageUrls.forEach(url => {
-                //             editedPost.images.push(url)
-                //         })
-
-
-                //         // console.log(editedPost)
-                //         // console.log(id)
-
-                //         const updateEditedPost = await axios.put(`http://localhost:3000/user/post/${id}`, editedPost, {
-                //             headers:{
-                //                 'Authorization': `Bearer ${token}` // token received from the login route
-                //             }
-                //         })
-
-                //         // console.log(updateEditedPost)
-
-                //         // main.replaceChild(postContainer, editPostContainer)
-                //         editPostContainer.style.display = 'none'
-
-                //         const updatedPost = await axios.get(`http://localhost:3000/user/post/${id}`, {
-                //             headers:{
-                //                 'Authorization': `Bearer ${token}` // token received from the login route
-                //             }
-                //         })
-                //         const updatedPostInfo = updatedPost.data.postList
-                //         // console.log(updatedPostInfo)
-                //         title.textContent = updatedPostInfo.postTitle
-                //         content.textContent = updatedPostInfo.postContent
-                //         const updatedImages = updatedPostInfo.images
-
-                //         //  console.log(updatedImages)
-
-                //         //remove all images in the image container first
-                //         while(imgContainer.firstChild){
-                //             imgContainer.removeChild(imgContainer.firstChild)
-                //         }
-                        
-                //         //Then re-append images one by one
-                //         updatedImages.forEach(url => {
-                //             // console.log(url)
-                //             const img = document.createElement('img')
-                //             img.className = 'img'
-                //             img.src = url
-                //             img.alt = "User Post Image"
-                //             imgContainer.appendChild(img)
-                //             console.log(imgContainer)
-                //         })
-                //         postOriginal.style.display = 'block'
-
-                //     })
-
-
-                //     editCancelBtn.addEventListener('click', () => {
-
-                //         try{
-                //             editPostContainer.style.display = 'none'
-                //             postOriginal.style.display = 'block'
-
-                //         }catch(error){
-                //             console.log('edit cancel button error', `${error}`)
-                //         }
-                        
-                    
-                //     })
-
-                // })
-
-
-
-
-
-                // deleteBtn.addEventListener('click', async (e) =>{
-                //     const clickedBtn = e.currentTarget
-                //     const postDiv = clickedBtn.parentNode.parentNode.parentNode
-                //     const _id = postDiv.getAttribute('id')
-                //     console.log(_id)
-
-                //     const deletedPost = await axios.delete(`http://localhost:3000/user/post/${_id}`,{
-                //         headers:{
-                //             Authorization: `Bearer ${token}`
-                //         }
-                //     })
-                //     postDiv.remove()
-
-                //     const commentIdArray = deletedPost.data.postDeleted.commentId
-                //     // console.log(commentIdArray)
-
-                //     commentIdArray.forEach(async (id) => {
-                //         const deleteComment = await axios.delete(`http://localhost:3000/post/comment/${id}`,{
-                //             headers:{
-                //                 Authorization: `Bearer ${token}`
-                //             }
-                //         })
-                //         // console.log(deleteComment)
-                //     })
-                        
-
-
-                // })
-
-                
+                //Go to each post's page.
+                title.addEventListener('click', ()=>{
+                    // Get this post info. post id and username
+                    const selectUser = JSON.parse(localStorage.getItem('selectUser'))
+                    console.log(selectUser)
+                    const postInfo = {
+                        postId:post._id,
+                        username: selectUser.selectusername
+                    }
+                    console.log(postInfo)
+                    localStorage.setItem('postInfo',JSON.stringify(postInfo))
+                    window.location.href = '../singlepost/singlepost.html'
+                })
 
             }catch(error){
                     console.log(`insert post error : ${error}`)

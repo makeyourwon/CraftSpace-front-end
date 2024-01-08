@@ -295,6 +295,7 @@ async function createPost(formData){
                 'Authorization': `Bearer ${token}` // token received from the login route
             }  
         })   
+        console.log(response.data.newPost)
         return response.data.newPost[0]
     }catch(error){
         console.log('store error', error)
@@ -302,4 +303,3 @@ async function createPost(formData){
 
 
 }
-// createPost()

@@ -408,14 +408,18 @@ async function home(){
 
                     // Retrieve value
                     const newComment = {
-                        comment: commentText.value
+                        comment: '',
+                        username: thisUser.username
                     }
+                    // console.log(newComment)
                     
                     //save comment to database
                     sendBtn.addEventListener('click', async ()=> {
                         if (commentText.value !== ''){
+                            newComment.comment = commentText.value
+                            // console.log(newComment)
                             try{
-                                const updateComment = await axios.post('http://localhost:3000/post/comment', { $push: newComment},{
+                                const updateComment = await axios.post('http://localhost:3000/post/comment', newComment,{
                                     headers: {
                                         'Authorization': `Bearer ${token}` // token received from the login route
                                     } 
@@ -477,9 +481,10 @@ async function home(){
                 //Go to each post's page.
                 title.addEventListener('click', ()=>{
                     const postInfo = {
-                        postId:post._id
+                        postId:post._id,
+                        username: author.textContent.replace('@','')
                     }
-                    localStorage.setItem('postId',JSON.stringify(postInfo))
+                    localStorage.setItem('postInfo',JSON.stringify(postInfo))
                     window.location.href = '../singlepost/singlepost.html'
                 })
 

@@ -16,8 +16,7 @@ async function userPostPage(){
     userInfo.textContent = userStored.username
     userStatus.textContent = 'Log out'
     const thisUserId = userStored._id
-    // console.log(thisUserId)
-    
+    // console.log(thisUserId) 
 
     const posts = await axios.get('http://localhost:3000/user/post',{
         headers: {
@@ -246,7 +245,8 @@ async function userPostPage(){
             
                     // Retrieve value
                     const newComment = {
-                        comment: ''
+                        comment: '',
+                        username: userStored.username
                     }
                     // console.log(commentText.value)
                     
@@ -339,13 +339,15 @@ async function userPostPage(){
                     editTitle.value = clickedPostTitle.textContent
                     editContent.value = clickedPostContent.textContent
                     
-            
+                    // Retrieve image Url if there is any image attached.
                     if (clickedPostImage){
                         
                         const imagesUrl = Array.from(clickedPostImage).map(img => img.src)
                         editImage.value = imagesUrl
-                        // console.log(imagesUrl)
+                        console.log(editImage.value)
                         // console.log(joinImagesUrl)
+                    }else {
+                        editImage.value = ''
                     }
                     
                     
@@ -375,10 +377,16 @@ async function userPostPage(){
 
                         }
                         //Get the image array
+
                         const imageUrls = editImage.value.split(',').map(url => url.trim())
-                        imageUrls.forEach(url => {
-                            editedPost.images.push(url)
-                        })
+                        if (imageUrls.length > 0 && imageUrls[0] !== ''){
+                            imageUrls.forEach(url => {
+                                editedPost.images.push(url)
+                            })
+                        }else {
+                            editedPost.images = []
+                        }
+
 
 
                         // console.log(editedPost)
@@ -406,7 +414,7 @@ async function userPostPage(){
                         content.textContent = updatedPostInfo.postContent
                         const updatedImages = updatedPostInfo.images
 
-                        //  console.log(updatedImages)
+                        //  console.log(updatedImages.length)
 
                         //remove all images in the image container first
                         while(imgContainer.firstChild){
@@ -414,15 +422,20 @@ async function userPostPage(){
                         }
                         
                         //Then re-append images one by one
-                        updatedImages.forEach(url => {
-                            // console.log(url)
-                            const img = document.createElement('img')
-                            img.className = 'img'
-                            img.src = url
-                            img.alt = "User Post Image"
-                            imgContainer.appendChild(img)
-                            console.log(imgContainer)
-                        })
+                        if ( updatedImages.length > 0 && updatedImages[0] !== ''){
+                            updatedImages.forEach(url => {
+                                // console.log(url)
+                                const img = document.createElement('img')
+                                img.className = 'img'
+                                img.src = url
+                                img.alt = "User Post Image"
+                                imgContainer.appendChild(img)
+                                // console.log(imgContainer)
+                            })
+                        }else {
+                            img.src = ''
+                        }
+
                         postOriginal.style.display = 'block'
 
                     })
@@ -483,8 +496,19 @@ async function userPostPage(){
 
                     console.log(userUpdatePostId)
                         
+                })
 
 
+                //Go to each post's page.
+                title.addEventListener('click', ()=>{
+                    // Get this post info. post id and username. In this page, username is as same as loggedin user
+                    const postInfo = {
+                        postId:post._id,
+                        username: userStored.username
+                    }
+                    console.log(postInfo)
+                    localStorage.setItem('postInfo',JSON.stringify(postInfo))
+                    window.location.href = '../singlepost/singlepost.html'
                 })
 
                 
