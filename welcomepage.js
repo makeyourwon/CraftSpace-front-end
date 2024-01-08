@@ -1,14 +1,6 @@
 // import { default: axios }  from "axios"
 // Example frontend fetch call
-fetch(`${Backend_URI}`)
-  .then(response => response.json())
-  .then(data => {
-    // Do something with the data
-    console.log(data);
-  })
-  .catch(error => {
-    console.error('There was an error!', error);
-  });
+
 
 
 
