@@ -4,6 +4,8 @@ function toggleMenu() {
     navMenu.classList.toggle('show');
 }
 
+const Backend_URI = 'https://craft-space-08b2210b921c.herokuapp.com'
+
 async function userPostPage(){
     const token = localStorage.getItem('token')
     // console.log(token)
@@ -18,7 +20,7 @@ async function userPostPage(){
     const thisUserId = userStored._id
     // console.log(thisUserId) 
 
-    const posts = await axios.get('http://localhost:3000/user/post',{
+    const posts = await axios.get(`${Backend_URI}/user/post`,{
         headers: {
             'Authorization': `Bearer ${token}` // token received from the login route
         }
@@ -189,7 +191,7 @@ async function userPostPage(){
                 likeBtn.addEventListener('click', async ()=> {
                     if( post.likes.includes(userContext)){
 
-                        const removeUser = await axios.put(`http://localhost:3000/user/post/${id}`, {$pull: newLikes},{
+                        const removeUser = await axios.put(`${Backend_URI}/user/post/${id}`, {$pull: newLikes},{
                                 headers: {
                                 'Authorization': `Bearer ${token}` // token received from the login route
                             }} )
@@ -203,7 +205,7 @@ async function userPostPage(){
                                 
                     }else if(!post.likes.includes(userContext)){
 
-                        const addUser = await axios.put(`http://localhost:3000/user/post/${id}`, {$addToSet: newLikes},{
+                        const addUser = await axios.put(`${Backend_URI}/user/post/${id}`, {$addToSet: newLikes},{
                                 headers: {
                                 'Authorization': `Bearer ${token}` // token received from the login route
                             }} )
@@ -256,7 +258,7 @@ async function userPostPage(){
                             newComment.comment = commentText.value
                             console.log(newComment)
                             try{
-                                const updateComment = await axios.post('http://localhost:3000/post/comment', newComment,{
+                                const updateComment = await axios.post(`${Backend_URI}/post/comment`, newComment,{
                                     headers: {
                                         'Authorization': `Bearer ${token}` // token received from the login route
                                     } 
@@ -265,7 +267,7 @@ async function userPostPage(){
                                 const commentId = updateComment.data.newComment[0]._id
                                 console.log(commentId)
                                 // console.log(commentId)
-                                const updateCommentId = await axios.put(`http://localhost:3000/user/post/${post._id}`, {$push: {commentId:commentId}},{
+                                const updateCommentId = await axios.put(`${Backend_URI}/user/post/${post._id}`, {$push: {commentId:commentId}},{
                                     headers: {
                                     'Authorization': `Bearer ${token}` // token received from the login route
                                     
@@ -392,7 +394,7 @@ async function userPostPage(){
                         // console.log(editedPost)
                         // console.log(id)
 
-                        const updateEditedPost = await axios.put(`http://localhost:3000/user/post/${id}`, editedPost, {
+                        const updateEditedPost = await axios.put(`${Backend_URI}/user/post/${id}`, editedPost, {
                             headers:{
                                 'Authorization': `Bearer ${token}` // token received from the login route
                             }
@@ -403,7 +405,7 @@ async function userPostPage(){
                         // main.replaceChild(postContainer, editPostContainer)
                         editPostContainer.style.display = 'none'
 
-                        const updatedPost = await axios.get(`http://localhost:3000/user/post/${id}`, {
+                        const updatedPost = await axios.get(`${Backend_URI}/user/post/${id}`, {
                             headers:{
                                 'Authorization': `Bearer ${token}` // token received from the login route
                             }
@@ -469,7 +471,7 @@ async function userPostPage(){
                     console.log(authorOfPost)
                     // console.log(_id)
 
-                    const deletedPost = await axios.delete(`http://localhost:3000/user/post/${_id}`,{
+                    const deletedPost = await axios.delete(`${Backend_URI}/user/post/${_id}`,{
                         headers:{
                             Authorization: `Bearer ${token}`
                         }
@@ -480,7 +482,7 @@ async function userPostPage(){
                     const commentIdArray = deletedPost.data.postDeleted.commentId
                     // console.log(commentIdArray)
                     commentIdArray.forEach(async (id) => {
-                        const deleteComment = await axios.delete(`http://localhost:3000/post/comment/${id}`,{
+                        const deleteComment = await axios.delete(`${Backend_URI}/post/comment/${id}`,{
                             headers:{
                                 Authorization: `Bearer ${token}`
                             }
@@ -488,7 +490,7 @@ async function userPostPage(){
                         // console.log(deleteComment)
                     })
 
-                    const userUpdatePostId = await axios.put(`http://localhost:3000/user/${authorOfPost}`, { $pull: {postId:_id}}, {
+                    const userUpdatePostId = await axios.put(`${Backend_URI}/user/${authorOfPost}`, { $pull: {postId:_id}}, {
                         headers:{
                             Authorization: `Bearer ${token}`
                         }

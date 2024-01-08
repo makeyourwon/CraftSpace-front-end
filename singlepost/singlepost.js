@@ -4,6 +4,8 @@ function toggleMenu() {
     navMenu.classList.toggle('show');
 }
 
+Backend_URI = 'https://craft-space-08b2210b921c.herokuapp.com'
+
 async function singlePost() {
     const token = localStorage.getItem('token')
     // console.log(token)
@@ -22,7 +24,7 @@ async function singlePost() {
     // console.log(clickedpostInfo.postId)
 
     // Use the info got from the local storage to retrieve the post details
-    const clickedPost =  await axios.get(`http://localhost:3000/user/post/${clickedpostInfo.postId}`,{
+    const clickedPost =  await axios.get(`${Backend_URI}/user/post/${clickedpostInfo.postId}`,{
         headers:{
             'Authorization': `Bearer ${token}`
         }
@@ -165,7 +167,7 @@ async function singlePost() {
     likeBtn.addEventListener('click', async ()=> {
         if( thisPost.likes.includes(userStored.username)){
 
-            const removeUser = await axios.put(`http://localhost:3000/user/post/${thisPost._id}`, {$pull: newLikes},{
+            const removeUser = await axios.put(`${Backend_URI}/user/post/${thisPost._id}`, {$pull: newLikes},{
                     headers: {
                     'Authorization': `Bearer ${token}` // token received from the login route
                 }} )
@@ -179,7 +181,7 @@ async function singlePost() {
                     
         }else if(!thisPost.likes.includes(userStored.username)){
 
-            const addUser = await axios.put(`http://localhost:3000/user/post/${thisPost._id}`, {$addToSet: newLikes},{
+            const addUser = await axios.put(`${Backend_URI}/user/post/${thisPost._id}`, {$addToSet: newLikes},{
                     headers: {
                     'Authorization': `Bearer ${token}` // token received from the login route
                 }} )
@@ -232,7 +234,7 @@ async function singlePost() {
                 newComment.comment = commentText.value
                 console.log(newComment)
                 try{
-                    const updateComment = await axios.post('http://localhost:3000/post/comment', newComment,{
+                    const updateComment = await axios.post(`${Backend_URI}/post/comment`, newComment,{
                         headers: {
                             'Authorization': `Bearer ${token}` // token received from the login route
                         } 
@@ -242,7 +244,7 @@ async function singlePost() {
                     console.log(commentId)
                     
                     // console.log(commentId)
-                    const updateCommentId = await axios.put(`http://localhost:3000/user/post/${thisPost._id}`, {$push: {commentId:commentId}},{
+                    const updateCommentId = await axios.put(`${Backend_URI}/user/post/${thisPost._id}`, {$push: {commentId:commentId}},{
                         headers: {
                         'Authorization': `Bearer ${token}` // token received from the login route
                         
@@ -278,7 +280,7 @@ async function singlePost() {
     })
 
     // Retrieve all the comments belong to this post and diplay in ascending order
-    const allComments = await axios.get(`http://localhost:3000/post/comment`,{
+    const allComments = await axios.get(`${Backend_URI}/post/comment`,{
         headers: {
         'Authorization': `Bearer ${token}` // token received from the login route
         
@@ -349,7 +351,7 @@ async function singlePost() {
                     const clickedCommentBox = clickedDeleteBtn.parentNode.parentNode
                     console.log(clickedCommentBox)
                     // Get this comment as the id and delete it.
-                    const deleteComment = await axios.delete(`http://localhost:3000/post/comment/${comment}`,{
+                    const deleteComment = await axios.delete(`${Backend_URI}/post/comment/${comment}`,{
                         headers: {
                         'Authorization': `Bearer ${token}` // token received from the login route
                         
@@ -361,7 +363,7 @@ async function singlePost() {
                         commentId:comment
                     }
                     console.log(commentToDelete)
-                    const deleteInPost = await axios.put(`http://localhost:3000/user/post/${clickedpostInfo.postId}`, { $pull: commentToDelete}, {
+                    const deleteInPost = await axios.put(`${Backend_URI}/user/post/${clickedpostInfo.postId}`, { $pull: commentToDelete}, {
                         headers: {
                         'Authorization': `Bearer ${token}` // token received from the login route
                         

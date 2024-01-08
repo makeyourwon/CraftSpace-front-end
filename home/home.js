@@ -7,45 +7,15 @@ function toggleMenu() {
     navMenu.classList.toggle('hidden');
     navMenu.classList.toggle('show');
 }
+Backend_URI = 'https://craft-space-08b2210b921c.herokuapp.com'
 
 async function home(){
+    //find this logged in user
     const thisUser = JSON.parse(localStorage.getItem('userInfo'))
     const token = localStorage.getItem('token')
     // console.log(token)
 
     if (token){
-    //find this logged in user
-
-    // const users = await axios.get('http://localhost:3000/user',{
-    //     headers: {
-    //         'Authorization': `Bearer ${token}` // token received from the login route
-    //     }
-    // })
-
-    // const findUser = users.data.userList
-    // console.log(findUser)
-    // let thisUser = {
-    //     username:'',
-    //     _id:''
-    // }
-    // for (let i in findUser){
-    //     if (findUser[i].username === inputName.value){
-            
-    //         thisUser.username = findUser[i].username
-    //         thisUser._id = findUser[i]._id
-            
-    //     }
-    // }
-    // console.log(thisUser)
-    // localStorage.setItem('userInfo', JSON.stringify(thisUser))
-
-
-
-    //
-    
-    // console.log(token)
-    // localStorage.setItem("token", token)
-
     
     const main = document.querySelector('main')
     const status = document.querySelector("#status")
@@ -68,7 +38,7 @@ async function home(){
     status.appendChild(userInfo)
     status.appendChild(userStatus)
 
-    const posts = await axios.get('http://localhost:3000/user/post',{
+    const posts = await axios.get(`${Backend_URI}/user/post`,{
         headers: {
             'Authorization': `Bearer ${token}` // token received from the login route
         }
@@ -127,7 +97,7 @@ async function home(){
 
                 // Get author info of each post
                 // console.log(post.userId)
-                const userData = await axios.get('http://localhost:3000/user',{
+                const userData = await axios.get(`${Backend_URI}/user`,{
                     headers:{
                         'Authorization': `Bearer ${token}` // token received from the login route
                     }
@@ -227,7 +197,7 @@ async function home(){
                 likeBtn.addEventListener('click', async ()=> {
                     if( post.likes.includes(userContext)){
 
-                        const removeUser = await axios.put(`http://localhost:3000/user/post/${id}`, {$pull: newLikes},{
+                        const removeUser = await axios.put(`${Backend_URI}/user/post/${id}`, {$pull: newLikes},{
                                 headers: {
                                 'Authorization': `Bearer ${token}` // token received from the login route
                             }} )
@@ -241,7 +211,7 @@ async function home(){
                                 
                     }else if(!post.likes.includes(userContext)){
 
-                        const addUser = await axios.put(`http://localhost:3000/user/post/${id}`, {$addToSet: newLikes},{
+                        const addUser = await axios.put(`${Backend_URI}/user/post/${id}`, {$addToSet: newLikes},{
                                 headers: {
                                 'Authorization': `Bearer ${token}` // token received from the login route
                             }} )
@@ -256,120 +226,6 @@ async function home(){
                 })
 
 
-                
-                // if( post.likes.includes(userContext)){
-                    
-                //     likeBtn.innerHTML = '<i class="fa-solid fa-heart"></i>'
-                //     likeBtn.style.color = 'red'
-                // }
-                // else{
-                //     likeBtn.innerHTML = '<i class="fa-regular fa-heart"></i>'
-                //         likeBtn.style.color = 'black'
-                // }
-                 
-                
-                // likeBtn.addEventListener('click', async () => {
-                    
-                //     //check if the user is in likes array.  If yes, change the color of heart and update post
-                //     //and then update the count quantity to the front end.
-                //     if (post.likes.includes(userContext)){
-                        
-                //         try{
-                //             const removeUser = await axios.put(`http://localhost:3000/user/post/${id}`, {$pull: newLikes},{
-                //                 headers: {
-                //                 'Authorization': `Bearer ${token}` // token received from the login route
-                //             }} )
-
-                //             console.log("Success:", removeUser);
-                //             likeBtn.innerHTML = '<i class="fa-regular fa-heart"></i>'
-                //             likeBtn.style.color = 'black'
-                            
-                //             likeCount.textContent = removeUser.data.postUpdated.likes.length
-                            
-                            
-                        
-                //         }catch(error){
-                //             console.error("Error updating likes:", `${error}`);
-                //         }
-                //     }else{
-                         
-                //         // if user is not in likes array, change the color of heart and update the post in back end;
-                //         // and update the like numbers to the front end.
-                //         try{
-                //             console.log(newLikes)
-                //             likeBtn.innerHTML = '<i class="fa-solid fa-heart"></i>'
-                //             likeBtn.style.color = 'red'
-                            
-                //             const addUser = await axios.put(`http://localhost:3000/user/post/${id}`, {$addToSet: newLikes},{
-                //                 headers: {
-                //                 'Authorization': `Bearer ${token}` // token received from the login route
-                                
-                //             }})
-                //             // console.log("Success:", addUser);
-                //             //change the likes count
-                //             likeCount.textContent = addUser.data.postUpdated.likes.length
-                            
-                            
-
-                            
-                //         }catch(error) {
-                //             console.error("Error updating likes:", `${error}`);
-                //         }
-
-                //     }
-                    
-                // })
-
-            
-
-
-        
-            
-            
-                // //chatgpt options: work as mine code. no difference 
-
-                // // Inside your postList forEach loop where you create the like button and other elements
-
-                // // Set initial like button state
-                // updateLikeButton(post.likes.includes(thisUser._id), likeBtn, likeCount);
-
-                // likeBtn.addEventListener('click', async () => {
-                //     const isLiked = post.likes.includes(thisUser._id);
-                    
-                //     // Determine the correct API endpoint and method
-                //     const endpoint = `http://localhost:3000/user/post/${id}`;
-                //     try {
-                //         const response = isLiked
-                //             ? await axios.put(endpoint, { $pull: newLikes }, { headers: { 'Authorization': `Bearer ${token}` } })
-                //             : await axios.put(endpoint, { $addToSet: newLikes }, { headers: { 'Authorization': `Bearer ${token}` } });
-                        
-                //         // Assume the API responds with the updated post
-                //         const updatedPost = response.data;
-
-                //         // Update the local post data and UI
-                //         post.likes = updatedPost.likes;
-                //         updateLikeButton(post.likes.includes(thisUser._id), likeBtn, likeCount);
-                //     } catch (error) {
-                //         console.error("Error updating likes:", error);
-                //     }
-                // });
-
-                //     // ... [rest of your code]
-                
-
-                // // Function to update like button appearance and like count
-                // function updateLikeButton(isLiked, likeBtn, likeCount) {
-                //     if (isLiked) {
-                //         likeBtn.innerHTML = '<i class="fa-solid fa-heart"></i>';
-                //         likeBtn.style.color = 'red';
-                //     } else {
-                //         likeBtn.innerHTML = '<i class="fa-regular fa-heart"></i>';
-                //         likeBtn.style.color = 'black';
-                //     }
-                //     likeCount.textContent = isLiked ? parseInt(likeCount.textContent) + 1 : parseInt(likeCount.textContent) - 1;
-                // }
-
-                //
 
 
 
@@ -410,7 +266,7 @@ async function home(){
                             newComment.comment = commentText.value
                             // console.log(newComment)
                             try{
-                                const updateComment = await axios.post('http://localhost:3000/post/comment', newComment,{
+                                const updateComment = await axios.post(`${Backend_URI}/post/comment`, newComment,{
                                     headers: {
                                         'Authorization': `Bearer ${token}` // token received from the login route
                                     } 
@@ -418,7 +274,7 @@ async function home(){
                                 //get commentId and store it to post schema
                                 const commentId = updateComment.data.newComment[0]._id
                                 // console.log(commentId)
-                                const updateCommentId = await axios.put(`http://localhost:3000/user/post/${post._id}`, {$push: {commentId:commentId}},{
+                                const updateCommentId = await axios.put(`${Backend_URI}/user/post/${post._id}`, {$push: {commentId:commentId}},{
                                     headers: {
                                     'Authorization': `Bearer ${token}` // token received from the login route
                                     

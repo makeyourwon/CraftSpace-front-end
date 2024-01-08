@@ -4,6 +4,7 @@ function toggleMenu() {
     navMenu.classList.toggle('show');
 }
 
+Backend_URI = 'https://craft-space-08b2210b921c.herokuapp.com'
 
 async function profile(){
     // Get all the sections needed
@@ -20,7 +21,7 @@ async function profile(){
 
     //set values to the divs/sections
 
-    const users = await axios.get('http://localhost:3000/user',{
+    const users = await axios.get(`${Backend_URI}/user`,{
         headers: {
             'Authorization': `Bearer ${token}` // token received from the login route
         }

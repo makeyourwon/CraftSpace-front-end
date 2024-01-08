@@ -1,3 +1,5 @@
+Backend_URI = 'https://craft-space-08b2210b921c.herokuapp.com'
+
 function SignUp(){
     
     // const form = document.querySelector('form')
@@ -21,7 +23,7 @@ function SignUp(){
                 pswd: pswd.value
             }
             console.log(newUser)
-            const update = await axios.post('http://localhost:3000/signup', newUser)
+            const update = await axios.post(`${Backend_URI}/signup`, newUser)
             window.location.href = 'login.html'
         }
         catch(error){
