@@ -144,21 +144,6 @@ async function home(){
                 likeCount.textContent = post.likes.length
                 commentCount.textContent = post.commentId.length
 
-                //style
-                // const iconStyle = document.querySelectorAll('.icon')
-                // console.log(iconStyle)
-                // // console.log('length', iconStyle)
-                // iconStyle.forEach(icon => {
-                    
-                //     icon.style.display = 'flex'
-                //     icon.style.alignItems = 'center'
-                //     // console.log(icon)
-                // })
-                // const iconDiv = document.querySelectorAll('.icon-div')
-                // iconDiv.forEach( div => {
-                //     console.log(div)
-                //     div.style.margin = '5px'
-                // })
                 likeBtn.style.display = 'flex'
                 commentBtn.style.display = 'flex'
                 likeCount.style.display = 'flex'

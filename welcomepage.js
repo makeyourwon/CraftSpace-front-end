@@ -28,6 +28,21 @@ async function latest5Post() {
         eachPost.appendChild(Title)
         eachPost.appendChild(Content)
 
+         //add images
+         if (post.images.length > 0) {
+            post.images.forEach(imageUrl => {
+                if (imageUrl !== ''){
+                    const img = document.createElement('img')
+                    img.className = 'img'
+                    img.src = imageUrl; // Set the src of img element to the image URL
+                    img.alt = "User Post Image"; // Set the alt text for the image
+                    img.style.maxWidth = '100%'; // Optional: Ensure the image isn't too large
+                    eachPost.appendChild(img); // Append the image to the post container
+                }
+
+            });
+        }
+
         postSection.prepend(eachPost)
         main.appendChild(postSection)
 
