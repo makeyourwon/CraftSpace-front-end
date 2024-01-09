@@ -43,7 +43,7 @@ async function profile(){
             localStorage.removeItem('userInfo')
             localStorage.removeItem('selectUser')
             localStorage.removeItem('postInfo')
-            window.location.href='../landingPage/index.html'
+            window.location.href='../index.html'
         })
 
         //Connect post button to createpost page

@@ -6,6 +6,7 @@ function authorize(){
     const inputName = document.querySelector('.username')
     const inputPswd = document.querySelector('.password')
     const signIn = document.querySelector('.sign-in')
+    const signUp = document.querySelector('.sign-up')
     const form = document.querySelector('.form')
     
 
@@ -61,9 +62,10 @@ function authorize(){
                 localStorage.setItem("token", logIn.data.token)
                 window.location.href = '../home/home.html'
             
-                
+
    
             }
+            
 
         }
         catch(error){
@@ -75,6 +77,11 @@ function authorize(){
 
 
     })
+
+    signUp.addEventListener('click', ()=> {
+        window.location.href = './signup.html'
+    })
+
 }
 
 

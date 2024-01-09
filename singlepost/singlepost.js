@@ -326,17 +326,37 @@ async function singlePost() {
                 //add new section to <main>
                 commentBox.appendChild(commentContent)
                 commentBox.appendChild(deleteBtn)
+
+
                 if (userStored.userId === thisPost.userId){
-                    commentBox.appendChild(deleteBtn)
+                
+                    // commentBox.appendChild(deleteBtn)
                     deleteBtn.style.display = 'flex'
             
                 }
-                else if (commentuser.textContent === userStored.username){
-                    commentBox.appendChild(deleteBtn)
-                    deleteBtn.style.display = 'flex'
-                }else{
-                    deleteBtn.style.display = 'none'
-                }
+                else{
+                    if (commentuser.textContent === userStored.username){
+
+                        // commentBox.appendChild(deleteBtn)
+                        deleteBtn.style.display = 'flex'
+                    }else{
+                        deleteBtn.style.display = 'none'
+                    }
+                } 
+
+                // //chatgpt answer
+                // const isPostOwner = userStored.userId === thisPost.userId;
+                // const isCommentOwner = userStored.userId === comments[index].userId; // Assuming your comment has a userId field
+
+                // if (isPostOwner ) {
+                //     deleteBtn.style.display = 'flex';
+                // }else if(isCommentOwner) {
+                //     deleteBtn.style.display = 'flex';
+                // }
+                //  else {
+                //     deleteBtn.style.display = 'none';
+                // }
+
 
                 eachComment.appendChild(commentuser)
                 eachComment.appendChild(commentBox)
